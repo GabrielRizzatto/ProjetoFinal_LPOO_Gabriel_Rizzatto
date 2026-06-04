@@ -41,3 +41,66 @@ Abaixo estão as restrições lógicas e operacionais específicas do domínio d
 
 * **RN01:** Um livro não pode ser excluído do sistema se possuir um registro de empréstimo ativo vinculado a ele, garantindo a integridade referencial do histórico no banco de dados.
 * **RN02:** O sistema deve garantir que o botão e a funcionalidade de "Cadastrar Livro" sejam absolutamente inacessíveis para usuários que tenham efetuado login com o perfil "comum".
+
+
+
+## 2. Casos de Uso
+
+### Diagramas de Casos de Uso
+
+![Diagrama de Caso de Uso](img\diagrama_caso_de_uso.png)
+
+### Efetuar Login
+
+| Nome do Caso de Uso | Efetuar Login |
+| :--- | :--- |
+| **Ator Principal** | Usuário Comum, Administrador |
+| **Atores Secundários** | Nenhum |
+| **Resumo** | Processo de autenticação obrigatório para identificação do utilizador e liberação de funcionalidades de acordo com o nível de acesso. |
+| **Pré-condições** | O utilizador deve possuir registo ativo na base de dados. |
+| **Pós-condições** | Sessão iniciada com as permissões adequadas ativas na interface. |
+| **Cenário Principal** | |
+| **Ações do Ator** | **Ações do Sistema** |
+| 1. Inserir as credenciais de acesso. | 2. Validar as informações inseridas. |
+| | 3. Identificar o tipo de utilizador (Comum ou Administrador). |
+| | 4. Libertar o acesso correspondente na interface. |
+
+---
+
+### Criar Conta
+
+| Nome do Caso de Uso | Criar Conta |
+| :--- | :--- |
+| **Ator Principal** | Usuário Comum |
+| **Atores Secundários** | Nenhum |
+| **Resumo** | Permite que um novo utilizador se registe no sistema. Este caso de uso atua como uma extensão do Login, sendo uma opção alternativa caso o utilizador não possua cadastro. |
+| **Pré-condições** | O utilizador não possuir conta no sistema. |
+| **Pós-condições** | Nova conta de utilizador criada e registada na base de dados. |
+| **Cenário Principal** | |
+| **Ações do Ator** | **Ações do Sistema** |
+| 1. Na tela de login, selecionar "Criar Conta". | 2. Apresentar o formulário de registo. |
+| 3. Preencher os dados pessoais e submeter. | 4. Validar e persistir os dados na base de dados. |
+| **Fluxo de Extensão (<<extend>>)** | |
+| **Ações do Ator** | **Ações do Sistema** |
+| | 1. Este caso de uso estende o **Efetuar Login**, atuando como um fluxo alternativo opcional acionado a partir da interface de autenticação. |
+
+---
+
+### Alugar Livro
+
+| Nome do Caso de Uso | Alugar Livro |
+| :--- | :--- |
+| **Ator Principal** | Usuário Comum |
+| **Atores Secundários** | Nenhum |
+| **Resumo** | Processo de requisição e locação de um livro selecionado no acervo da biblioteca. |
+| **Pré-condições** | O livro selecionado possuir quantidade maior que zero em stock. |
+| **Pós-condições** | O inventário é atualizado e o empréstimo é registado no histórico do utilizador. |
+| **Cenário Principal** | |
+| **Ações do Ator** | **Ações do Sistema** |
+| 1. Selecionar um livro na tabela do acervo. | |
+| 2. Clicar em "Alugar Livro Selecionado". | 3. Registar a associação entre o ID do livro e o ID do utilizador. |
+| | 4. Decrementar a quantidade disponível do livro. |
+| | 5. Exibir mensagem de sucesso. |
+| **Fluxo de Inclusão (<<include>>)** | |
+| **Ações do Ator** | **Ações do Sistema** |
+| | 1. Para executar este caso de uso, o sistema exige obrigatoriamente a execução prévia do **Efetuar Login**. |
