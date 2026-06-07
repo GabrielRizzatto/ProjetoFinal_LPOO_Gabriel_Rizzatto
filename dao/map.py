@@ -1,9 +1,10 @@
-from sqlalchemy import Table, Column, Integer, String, Enum, MetaData, ForeignKey, Date, Text
+from sqlalchemy import Table, Column, Integer, String, Enum, MetaData, ForeignKey, Date
 from sqlalchemy.orm import registry
 from models.usuario import Usuario
 from models.tipo_usuario import TipoUsuario
 from models.livro import Livro
 from models.emprestimo import Emprestimo
+from dao.db_config import engine
 
 mapper_registry = registry()
 metadata = mapper_registry.metadata
@@ -24,15 +25,16 @@ tabela_livros = Table(
     metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('titulo', String(200), nullable=False),
-    Column('autor', String(150), nullable=False)
+    Column('autor', String(150), nullable=False),
+    Column('qtd', Integer, nullable=False, default=0)
 )
 
 tabela_emprestimos = Table(
     'emprestimos',
     metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('id_usuario', Integer, ForeignKey('usuario.id'), nullable=False),
-    Column('id_livro', Integer, ForeignKey('livro.id'), nullable=False),
+    Column('id_usuario', Integer, ForeignKey('usuarios.id'), nullable=False),
+    Column('id_livro', Integer, ForeignKey('livros.id'), nullable=False),
     Column('data_retirada', Date, nullable=False),
     Column('data_devolucao_prevista', Date, nullable=False),
     Column('status', String(50), nullable=False)
@@ -42,3 +44,4 @@ def mapear_tabelas():
     mapper_registry.map_imperatively(Usuario, tabela_usuarios)
     mapper_registry.map_imperatively(Livro, tabela_livros)
     mapper_registry.map_imperatively(Emprestimo, tabela_emprestimos)
+    metadata.create_all(engine)
