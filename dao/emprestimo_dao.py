@@ -34,5 +34,5 @@ class EmprestimoDAO(GenericDAO):
     
 
     def buscar_ativos_por_id_usuario(self, id_usuario: int):
-        return self.session.query(Emprestimo, Livro).join(Livro, Emprestimo.id_livro == Livro.id).filter(Emprestimo.status == "ATIVO").order_by(Emprestimo.data_retirada).all()
+        return self.session.query(Emprestimo, Livro).join(Livro, Emprestimo.id_livro == Livro.id).filter(Emprestimo.status == "ATIVO", Emprestimo.id_usuario == id_usuario).order_by(Emprestimo.data_retirada).all()
         

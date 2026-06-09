@@ -1,0 +1,68 @@
+from dao.livro_dao import LivroDAO
+from models.livro import Livro
+from dao.db_config import pegar_session
+import json
+
+class LivroController:
+
+    def __init__(self):
+        pass
+
+    def cadastrar_livro(self, titulo, autor, quantidade):
+        with pegar_session() as session:
+            dao = LivroDAO(session)
+            novo_livro = Livro(
+                titulo=titulo,
+                autor=autor,
+                qtd=quantidade
+            )
+            return dao.salvar(novo_livro)
+        
+    def listar_livros(self):
+        with pegar_session() as session:
+            dao = LivroDAO(session)
+            return dao.buscar_todos()
+        
+    def buscar_livro_por_id(self, id_livro):
+        with pegar_session() as session:
+            dao = LivroDAO(session)
+            return dao.buscar_por_id(id_livro)
+        
+    def buscar_livro_por_titulo(self, titulo_livro):
+        with pegar_session() as session:
+            dao = LivroDAO(session)
+            return dao.buscar_por_id(titulo_livro)
+
+    def atualizar_livro(self, id_livro, titulo, autor, quantidade):
+        with pegar_session() as session:
+            dao = LivroDAO(session)
+            livro = dao.buscar_por_id(id_livro)
+            
+            if livro:
+                livro.titulo = titulo
+                livro.autor = autor
+                livro.qtd = quantidade
+                return dao.atualizar(livro)
+            
+            return None
+
+    def deletar_livro(self, id_livro):
+        with pegar_session() as session:
+            dao = LivroDAO(session)
+            return dao.deletar(id_livro)
+        
+    def importar_livros_json(self, caminho_arquivo):
+        with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
+            livros = json.load(arquivo)
+            
+        quantidade_adicionada = 0
+        for livro_data in livros:
+            titulo = livro_data.get("titulo")
+            autor = livro_data.get("autor")
+            qtd = livro_data.get("qtd")
+            
+            if titulo and autor and qtd is not None:
+                self.cadastrar_livro(titulo, autor,qtd)
+                quantidade_adicionada += 1
+                
+        return quantidade_adicionada
