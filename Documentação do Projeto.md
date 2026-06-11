@@ -48,7 +48,7 @@ Abaixo estão as restrições lógicas e operacionais específicas do domínio d
 
 ### Diagramas de Casos de Uso
 
-![Diagrama de Caso de Uso](img\diagrama_caso_de_uso.png)
+![Diagrama de Caso de Uso](img/diagrama_caso_de_uso.png)
 
 ### Efetuar Login
 
@@ -56,7 +56,7 @@ Abaixo estão as restrições lógicas e operacionais específicas do domínio d
 | :--- | :--- |
 | **Ator Principal** | Usuário Comum, Administrador |
 | **Atores Secundários** | Nenhum |
-| **Resumo** | Processo de autenticação obrigatório para identificação do utilizador e liberação de funcionalidades de acordo com o nível de acesso. |
+| **Resumo** | Processo de autenticação obrigatório para identificação do utilizador. |
 | **Pré-condições** | O utilizador deve possuir registo ativo na base de dados. |
 | **Pós-condições** | Sessão iniciada com as permissões adequadas ativas na interface. |
 | **Cenário Principal** | |
@@ -64,6 +64,25 @@ Abaixo estão as restrições lógicas e operacionais específicas do domínio d
 | 1. Inserir as credenciais de acesso. | 2. Validar as informações inseridas. |
 | | 3. Identificar o tipo de utilizador (Comum ou Administrador). |
 | | 4. Libertar o acesso correspondente na interface. |
+---
+
+### UC06 - Cadastrar Livro
+
+| Nome do Caso de Uso | UC06 – Cadastrar Livro |
+| :--- | :--- |
+| **Ator Principal** | Administrador |
+| **Atores Secundários** | Nenhum |
+| **Resumo** | Inclusão de novas obras ao banco de dados e atualização do catálogo da biblioteca. |
+| **Pré-condições** | O administrador deve possuir os dados da nova obra e ter os devidos privilégios de acesso. |
+| **Pós-condições** | Novo livro adicionado ao acervo e disponível para locação. |
+| **Cenário Principal** | |
+| **Ações do Ator** | **Ações do Sistema** |
+| 1. Clicar em "Cadastrar Novo Livro". | 2. Abrir o formulário de inserção de obras. |
+| 3. Preencher título, autor e quantidade e submeter. | 4. Validar os campos e persistir os dados na base de dados. |
+| | 5. Atualizar a tabela principal do acervo. |
+| **Fluxo de Inclusão (<<include>>)** | |
+| **Ações do Ator** | **Ações do Sistema** |
+| | 1. Para executar este caso de uso, o sistema exige obrigatoriamente a execução prévia do **UC01 - Efetuar Login**. |
 
 ---
 
