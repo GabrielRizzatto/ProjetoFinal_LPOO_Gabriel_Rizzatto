@@ -1,6 +1,6 @@
 # Documentação do Projeto - Gestão de Biblioteca
 
-## 1. Descrição e Delimitação do Escopo
+## Descrição e Delimitação do Escopo
 
 **Cenário do Sistema**
 O sistema de Gestão de Biblioteca é uma aplicação desktop desenvolvida para informatizar e modernizar o controle de acervos e empréstimos literários. O propósito principal é substituir controles manuais ou planilhas descentralizadas por uma plataforma unificada que garanta a integridade dos dados e o controle de acesso.
@@ -11,9 +11,9 @@ As principais funcionalidades contemplam o controle de acesso seguro (login), o 
 
 ---
 
-## 2. Fase de Análise
+## Fase de Análise
 
-### a) Requisitos Funcionais
+### Requisitos Funcionais
 Abaixo estão detalhadas as funcionalidades diretas que o sistema fornecerá aos seus usuários:
 
 * **RF01:** O sistema deve permitir o cadastro de usuários contendo nome, cpf, login, senha e tipo de permissão (administrador ou comum).
@@ -27,7 +27,7 @@ Abaixo estão detalhadas as funcionalidades diretas que o sistema fornecerá aos
 * **RF09:** O sistema deve permitir a atualização do status de um empréstimo para registrar a devolução de um livro.
 * **RF10:** O sistema deve exibir uma tela "Sobre" contendo informações gerais do software e do desenvolvedor.
 
-### b) Requisitos Não Funcionais
+### Requisitos Não Funcionais
 Abaixo estão as restrições técnicas, de qualidade e de arquitetura que o sistema deve respeitar:
 
 * **RNF01 (Arquitetura):** O sistema deve ser implementado na linguagem Python, respeitando a separação de responsabilidades do padrão arquitetural MVC (Model-View-Controller).
@@ -36,7 +36,7 @@ Abaixo estão as restrições técnicas, de qualidade e de arquitetura que o sis
 * **RNF04 (Design Patterns):** A estruturação do código deve aplicar obrigatoriamente o padrão de projeto Data Access Object (DAO) para o acesso a dados e o padrão Strategy para o gerenciamento de permissões de interface.
 * **RNF05 (Validação):** O sistema deve garantir a unicidade de registros críticos no banco de dados, não permitindo o cadastro de CPFs ou logins duplicados.
 
-### c) Regras de Negócio
+### Regras de Negócio
 Abaixo estão as restrições lógicas e operacionais específicas do domínio da biblioteca:
 
 * **RN01:** Um livro não pode ser excluído do sistema se possuir um registro de empréstimo ativo vinculado a ele, garantindo a integridade referencial do histórico no banco de dados.
@@ -44,7 +44,7 @@ Abaixo estão as restrições lógicas e operacionais específicas do domínio d
 
 
 
-## 2. Casos de Uso
+## Casos de Uso
 
 ### Diagramas de Casos de Uso
 
@@ -66,9 +66,9 @@ Abaixo estão as restrições lógicas e operacionais específicas do domínio d
 | | 4. Libertar o acesso correspondente na interface. |
 ---
 
-### UC06 - Cadastrar Livro
+### Cadastrar Livro
 
-| Nome do Caso de Uso | UC06 – Cadastrar Livro |
+| Nome do Caso de Uso | Cadastrar Livro |
 | :--- | :--- |
 | **Ator Principal** | Administrador |
 | **Atores Secundários** | Nenhum |
@@ -82,7 +82,7 @@ Abaixo estão as restrições lógicas e operacionais específicas do domínio d
 | | 5. Atualizar a tabela principal do acervo. |
 | **Fluxo de Inclusão (<<include>>)** | |
 | **Ações do Ator** | **Ações do Sistema** |
-| | 1. Para executar este caso de uso, o sistema exige obrigatoriamente a execução prévia do **UC01 - Efetuar Login**. |
+| | 1. Para executar este caso de uso, o sistema exige obrigatoriamente a execução prévia do **Efetuar Login**. |
 
 ---
 
@@ -123,3 +123,45 @@ Abaixo estão as restrições lógicas e operacionais específicas do domínio d
 | **Fluxo de Inclusão (<<include>>)** | |
 | **Ações do Ator** | **Ações do Sistema** |
 | | 1. Para executar este caso de uso, o sistema exige obrigatoriamente a execução prévia do **Efetuar Login**. |
+
+---
+
+## Diagrama de Classes - Modelo Conceitual 
+
+### Diagrama de Classes 
+
+```mermaid
+classDiagram
+
+    class TipoUsuario {
+        <<enumeration>>
+        ADMINISTRADOR
+        COMUM
+    }
+
+    class Usuario {
+        - id: int
+        - nome: String
+        - email: String
+        - senha: String
+        - tipo: TipoUsuario
+    }
+
+    class Livro {
+        - id: int
+        - titulo: String
+        - autor: String
+        - quantidade: int
+    }
+
+    class Emprestimo {
+        - id: int
+        - data_emprestimo: Date
+        - data_devolucao: Date
+    }
+
+    %% Relacionamentos de Negócio com Multiplicidade
+    Usuario --> TipoUsuario : possui
+    
+    Usuario "1" -- "0..*" Emprestimo : realiza >
+    Livro "1" -- "0..*" Emprestimo : compõe >
