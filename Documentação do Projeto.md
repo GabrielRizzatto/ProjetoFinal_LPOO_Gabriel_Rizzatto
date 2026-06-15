@@ -105,26 +105,6 @@ Abaixo estão as restrições lógicas e operacionais específicas do domínio d
 
 ---
 
-### Alugar Livro
-
-| Nome do Caso de Uso | Alugar Livro |
-| :--- | :--- |
-| **Ator Principal** | Usuário Comum |
-| **Atores Secundários** | Nenhum |
-| **Resumo** | Processo de requisição e locação de um livro selecionado no acervo da biblioteca. |
-| **Pré-condições** | O livro selecionado possuir quantidade maior que zero em stock. |
-| **Pós-condições** | O inventário é atualizado e o empréstimo é registado no histórico do utilizador. |
-| **Cenário Principal** | |
-| **Ações do Ator** | **Ações do Sistema** |
-| 1. Selecionar um livro na tabela do acervo. | |
-| 2. Clicar em "Alugar Livro Selecionado". | 3. Registar a associação entre o ID do livro e o ID do utilizador. |
-| | 4. Decrementar a quantidade disponível do livro. |
-| | 5. Exibir mensagem de sucesso. |
-| **Fluxo de Inclusão (<<include>>)** | |
-| **Ações do Ator** | **Ações do Sistema** |
-| | 1. Para executar este caso de uso, o sistema exige obrigatoriamente a execução prévia do **Efetuar Login**. |
-
----
 
 ## Diagrama de Classes - Modelo Conceitual 
 

@@ -16,6 +16,9 @@ class UsuarioDAO(GenericDAO):
 
     def buscar_todos(self):
         return self.session.query(Usuario).all()
+    
+    def buscar_ativos(self):
+        return self.session.query(Usuario).filter(Usuario.ativo == True).all()
 
     def atualizar(self, usuario: Usuario):
         self.session.merge(usuario)
@@ -25,10 +28,10 @@ class UsuarioDAO(GenericDAO):
     def deletar(self, id_usuario: int):
         usuario = self.buscar_por_id(id_usuario)
         if usuario:
-            self.session.delete(usuario)
+            usuario.ativo = False
             self.session.commit()
             return True
-        return False
+        return False    
 
     def buscar_por_login(self, login: str):
         return self.session.query(Usuario).filter(Usuario.login == login).first()

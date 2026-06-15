@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, Button, Entry, Label, Frame, END, ttk
-from controllers.login_controller import UsuarioController
+from controllers.usuario_controller import UsuarioController
 from models.tipo_usuario import TipoUsuario
 
 class CadastroUsuarioView(tk.Toplevel):

@@ -5,6 +5,7 @@ from controllers.emprestimo_controller import EmprestimoController
 from models.usuario import Usuario
 from views.strategy_factory import StrategyFactory
 from views.emprestimo_view import EmprestimoView
+from views.gerenciar_usuarios_view import GerenciarUsuariosView
 
 class LivrosView(tk.Toplevel):
     def __init__(self, usuario: Usuario, master = None):
@@ -85,7 +86,8 @@ class LivrosView(tk.Toplevel):
 
 
     def gerenciar_usuarios(self):
-        pass
+        self.withdraw()
+        GerenciarUsuariosView(master=self)
 
     def alugar_livro_selecionado(self):
         selecao = self.tree.selection()

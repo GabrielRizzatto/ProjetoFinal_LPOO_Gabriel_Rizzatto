@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Column, Integer, String, Enum, MetaData, ForeignKey, Date
+from sqlalchemy import Table, Column, Integer, String, Enum, MetaData, ForeignKey, Date, Boolean
 from sqlalchemy.orm import registry
 from models.usuario import Usuario
 from models.tipo_usuario import TipoUsuario
@@ -17,7 +17,8 @@ tabela_usuarios = Table(
     Column('cpf', String(14), unique=True, nullable=False),
     Column('login', String(100), unique=True, nullable=False),
     Column('senha', String, nullable=False),
-    Column('tipo_usuario', Enum(TipoUsuario), nullable=False)
+    Column('tipo_usuario', Enum(TipoUsuario), nullable=False),
+    Column('ativo', Boolean, nullable=False, default=True)
 )
 
 tabela_livros = Table(

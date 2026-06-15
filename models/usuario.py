@@ -1,7 +1,7 @@
 from models.tipo_usuario import TipoUsuario
 
 class Usuario:
-    def __init__(self, nome: str, cpf: str, login: str, senha: str, tipo_usuario: TipoUsuario, id: int = None):
+    def __init__(self, nome: str, cpf: str, login: str, senha: str, tipo_usuario: TipoUsuario, id: int = None, ativo : bool = True):
         if not self.validar_cpf(cpf):
             raise ValueError("O CPF informado é inválido.")
             
@@ -11,6 +11,7 @@ class Usuario:
         self.login = login
         self.senha = senha
         self.tipo_usuario = tipo_usuario
+        self.ativo = ativo
 
     @staticmethod
     def validar_cpf(cpf: str) -> bool:

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, Button, Entry, Label, Frame, END
-from controllers.login_controller import UsuarioController
+from controllers.usuario_controller import UsuarioController
 from views.livros_view import LivrosView
 
 class LoginView(tk.Toplevel):
