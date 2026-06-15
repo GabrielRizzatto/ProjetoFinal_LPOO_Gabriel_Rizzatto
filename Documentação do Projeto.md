@@ -106,6 +106,7 @@ Abaixo estão as restrições lógicas e operacionais específicas do domínio d
 ---
 
 
+
 ## Diagrama de Classes - Modelo Conceitual 
 
 ### Diagrama de Classes 
@@ -125,6 +126,7 @@ classDiagram
         - email: String
         - senha: String
         - tipo: TipoUsuario
+        - ativo: boolean
     }
 
     class Livro {
@@ -138,10 +140,11 @@ classDiagram
         - id: int
         - data_emprestimo: Date
         - data_devolucao: Date
+        - status: String
     }
 
-    %% Relacionamentos de Negócio com Multiplicidade
     Usuario --> TipoUsuario : possui
     
     Usuario "1" -- "0..*" Emprestimo : realiza >
     Livro "1" -- "0..*" Emprestimo : compõe >
+```
