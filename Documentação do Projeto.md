@@ -30,11 +30,11 @@ Abaixo estão detalhadas as funcionalidades diretas que o sistema fornecerá aos
 ### Requisitos Não Funcionais
 Abaixo estão as restrições técnicas, de qualidade e de arquitetura que o sistema deve respeitar:
 
-* **RNF01 (Arquitetura):** O sistema deve ser implementado na linguagem Python, respeitando a separação de responsabilidades do padrão arquitetural MVC (Model-View-Controller).
-* **RNF02 (Persistência):** Os dados devem ser obrigatoriamente persistidos em um banco de dados relacional PostgreSQL, utilizando a biblioteca SQLAlchemy para o mapeamento e comunicação.
-* **RNF03 (Interface):** A aplicação deve possuir uma Interface Gráfica de Usuário (GUI) desenvolvida utilizando a biblioteca Tkinter.
-* **RNF04 (Design Patterns):** A estruturação do código deve aplicar obrigatoriamente o padrão de projeto Data Access Object (DAO) para o acesso a dados e o padrão Strategy para o gerenciamento de permissões de interface.
-* **RNF05 (Validação):** O sistema deve garantir a unicidade de registros críticos no banco de dados, não permitindo o cadastro de CPFs ou logins duplicados.
+* **RNF01:** O sistema deve ser implementado na linguagem Python, respeitando a separação de responsabilidades do padrão arquitetural MVC (Model-View-Controller).
+* **RNF02:** Os dados devem ser obrigatoriamente persistidos em um banco de dados relacional PostgreSQL, utilizando a biblioteca SQLAlchemy para o mapeamento e comunicação.
+* **RNF03:** A aplicação deve possuir uma Interface Gráfica de Usuário (GUI) desenvolvida utilizando a biblioteca Tkinter.
+* **RNF04:** A estruturação do código deve aplicar obrigatoriamente o padrão de projeto Data Access Object (DAO) para o acesso a dados e o padrão Strategy para o gerenciamento de permissões de interface.
+* **RNF05:** O sistema deve garantir a unicidade de registros críticos no banco de dados, não permitindo o cadastro de CPFs ou logins duplicados.
 
 ### Regras de Negócio
 Abaixo estão as restrições lógicas e operacionais específicas do domínio da biblioteca:

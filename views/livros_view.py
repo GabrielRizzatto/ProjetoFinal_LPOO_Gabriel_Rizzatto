@@ -1,11 +1,11 @@
 import tkinter as tk
-from tkinter import messagebox, Button, Entry, Label, Frame, END, ttk
+from tkinter import messagebox, Entry, Label, Frame, END, ttk, Button
 from controllers.livro_controller import LivroController
 from controllers.emprestimo_controller import EmprestimoController
 from models.usuario import Usuario
 from views.strategy_factory import StrategyFactory
 from views.emprestimo_view import EmprestimoView
-from views.gerenciar_usuarios_view import GerenciarUsuariosView
+from views.sobre_view import SobreView
 
 class LivrosView(tk.Toplevel):
     def __init__(self, usuario: Usuario, master = None):
@@ -13,10 +13,16 @@ class LivrosView(tk.Toplevel):
         self.controller = LivroController()
         self.emprestimo = EmprestimoController()
         self.usuario = usuario
-        self.geometry("900x600")
+        self.geometry("900x650")
+        self.title("Sistema de Gestão de Biblioteca")
 
         self.protocol("WM_DELETE_WINDOW", self.fechar_sistema_completo)
 
+        self.menubar = tk.Menu(self)
+        menu_ajuda = tk.Menu(self.menubar, tearoff=0)
+        menu_ajuda.add_command(label="Sobre o Sistema", command=self.abrir_sobre)
+        self.menubar.add_cascade(label="Ajuda", menu=menu_ajuda)
+        self.config(menu=self.menubar)
 
         frame_busca = Frame(self)
         frame_busca.pack(pady=10, fill="x", padx=20)
@@ -40,13 +46,10 @@ class LivrosView(tk.Toplevel):
         self.tree.heading("autor", text="Autor")
         self.tree.heading("quantidade", text="Quantidade")
 
-        self.todos_os_livros = self.controller.listar_livros()
-
         self.tree.column("id", width=50, stretch=False, anchor="center")
-
         self.tree.column("titulo", width=250)
         self.tree.column("autor", width=150)
-        self.tree.column("quantidade", width=50,stretch=False, anchor="center")
+        self.tree.column("quantidade", width=50, stretch=False, anchor="center")
 
         frame_botoes = Frame(self)
         frame_botoes.pack(pady=10)
@@ -54,11 +57,11 @@ class LivrosView(tk.Toplevel):
         estrategia = StrategyFactory.obter_estrategia(self.usuario.tipo_usuario)
         estrategia.renderizar_botoes(frame_botoes, self)
 
-        btn_sair = Button(frame_botoes, text="Sair", command=self.voltar_login, width=15)
+        btn_sair = Button(self, text="Sair", command=self.voltar_login, width=15)
         btn_sair.pack(side="bottom", anchor="sw", padx=20, pady=20)
 
+        self.todos_os_livros = self.controller.listar_livros()
         self.atualizar_tabela(self.todos_os_livros)
-
 
     def atualizar_tabela(self, lista_livros):
         for linha in self.tree.get_children():
@@ -82,11 +85,18 @@ class LivrosView(tk.Toplevel):
         self.atualizar_tabela(livros_filtrados)
 
     def abrir_cadastro_livro(self):
-       pass
+        self.withdraw()
+        from views.cadastro_livro_view import CadastroLivroView
+        CadastroLivroView(master=self)
 
+    def abrir_gerenciar_livros(self):
+        self.withdraw()
+        from views.gerenciar_livros_view import GerenciarLivrosView
+        GerenciarLivrosView(master=self)
 
     def gerenciar_usuarios(self):
         self.withdraw()
+        from views.gerenciar_usuarios_view import GerenciarUsuariosView
         GerenciarUsuariosView(master=self)
 
     def alugar_livro_selecionado(self):
@@ -96,14 +106,12 @@ class LivrosView(tk.Toplevel):
             return
         
         item_id = selecao[0]
-
         valores = self.tree.item(item_id, "values")
 
         id_livro = valores[0]
         titulo = valores[1]
 
-
-        mensagem = f"Você tem certeza que deseja alugar o livro '{titulo}'?\n A partir da confirmação devera entragar o Livro em 7 dias"
+        mensagem = f"Tem a certeza que deseja alugar o livro '{titulo}'?\nA partir da confirmação deverá entregar o livro em 7 dias."
         
         confirmou = messagebox.askyesno(title="Confirmar Aluguel", message=mensagem)
         
@@ -111,23 +119,23 @@ class LivrosView(tk.Toplevel):
             try:
                 self.emprestimo.realizar_emprestimo(self.usuario.id, id_livro)
                 self.recarregar_livros()
-
+                messagebox.showinfo("Sucesso", "Empréstimo realizado com sucesso!")
             except Exception as e:
-                messagebox.showerror("Erro", f"Não Foi possível realizar o empréstimo: {str(e)}")
-        else:
-            return
+                messagebox.showerror("Erro", f"Não foi possível realizar o empréstimo: {str(e)}")
 
     def ver_meus_emprestimos(self):
         self.withdraw()
-        EmprestimoView(self.usuario, master= self)
+        EmprestimoView(self.usuario, master=self)
+        
+    def abrir_sobre(self):
+        self.withdraw()
+        SobreView(master=self)
 
     def fechar_sistema_completo(self):
         janela_raiz = self.master
-        
         while janela_raiz and janela_raiz.master:
             janela_raiz = janela_raiz.master
             
-
         if janela_raiz:
             janela_raiz.destroy()
         else:
@@ -135,7 +143,6 @@ class LivrosView(tk.Toplevel):
 
     def voltar_login(self):
         janela_raiz = self.master
-        
         while janela_raiz and janela_raiz.master:
             janela_raiz = janela_raiz.master
             
@@ -143,7 +150,6 @@ class LivrosView(tk.Toplevel):
             janela_raiz.deiconify()
             
         self.destroy()
-
 
     def recarregar_livros(self):
         self.todos_os_livros = self.controller.listar_livros()

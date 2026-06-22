@@ -1,6 +1,8 @@
 from dao.livro_dao import LivroDAO
 from models.livro import Livro
 from dao.db_config import pegar_session
+from sqlalchemy.exc import IntegrityError
+from models.emprestimo import Emprestimo
 import json
 
 class LivroController:
@@ -14,7 +16,8 @@ class LivroController:
             novo_livro = Livro(
                 titulo=titulo,
                 autor=autor,
-                qtd=quantidade
+                qtd=quantidade,
+                ativo=True
             )
             return dao.salvar(novo_livro)
         
@@ -48,12 +51,22 @@ class LivroController:
 
     def deletar_livro(self, id_livro):
         with pegar_session() as session:
+            emprestimo_pendente = session.query(Emprestimo).filter(
+                Emprestimo.id_livro == id_livro,
+                Emprestimo.status == "ATIVO"
+            ).first()
+            
+            if emprestimo_pendente:
+                raise ValueError("Este livro possui empréstimos ativos e não pode ser excluído até que seja devolvido.")
+                
             dao = LivroDAO(session)
             return dao.deletar(id_livro)
         
-    def importar_livros_json(self, caminho_arquivo):
-        with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
-            livros = json.load(arquivo)
+    def importar_livros_string_json(self, conteudo_json):
+        try:
+            livros = json.loads(conteudo_json)
+        except json.JSONDecodeError:
+            raise ValueError("O formato do texto fornecido não é um JSON válido.")
             
         quantidade_adicionada = 0
         for livro_data in livros:
@@ -62,7 +75,7 @@ class LivroController:
             qtd = livro_data.get("qtd")
             
             if titulo and autor and qtd is not None:
-                self.cadastrar_livro(titulo, autor,qtd)
+                self.cadastrar_livro(titulo, autor, qtd)
                 quantidade_adicionada += 1
                 
         return quantidade_adicionada

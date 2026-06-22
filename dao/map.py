@@ -27,7 +27,8 @@ tabela_livros = Table(
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('titulo', String(200), nullable=False),
     Column('autor', String(150), nullable=False),
-    Column('qtd', Integer, nullable=False, default=0)
+    Column('qtd', Integer, nullable=False, default=0),
+    Column('ativo', Boolean, nullable=False, default=True)
 )
 
 tabela_emprestimos = Table(

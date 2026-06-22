@@ -15,7 +15,7 @@ class LivroDAO(GenericDAO):
         return self.session.query(Livro).filter(Livro.id == id_livro).first()
 
     def buscar_todos(self):
-        return self.session.query(Livro).order_by(Livro.id).all()
+        return self.session.query(Livro).filter(Livro.ativo == True).order_by(Livro.id).all()
 
     def atualizar(self, livro: Livro):
         self.session.merge(livro)
@@ -25,7 +25,7 @@ class LivroDAO(GenericDAO):
     def deletar(self, id_livro: int):
         livro = self.buscar_por_id(id_livro)
         if livro:
-            self.session.delete(livro)
+            livro.ativo = False
             self.session.commit()
             return True
         return False
