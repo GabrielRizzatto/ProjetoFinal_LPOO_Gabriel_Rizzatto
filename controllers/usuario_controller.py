@@ -46,7 +46,7 @@ class UsuarioController:
         emprestimo_ctrl = EmprestimoController()
         emprestimos_ativos = emprestimo_ctrl.listar_emprestimo_usuario(id_usuario)
         
-        for emprestimo in emprestimos_ativos:
+        for emprestimo, livro in emprestimos_ativos:
             emprestimo_ctrl.devolver_livro(emprestimo.id)
             
         with pegar_session() as session:
