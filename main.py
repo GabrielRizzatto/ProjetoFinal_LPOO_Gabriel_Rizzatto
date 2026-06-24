@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 class JanelaPrincipal(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Sistema de Aluguel de Livros")
+        self.title("Sistema de Gestão de Biblioteca")
         self.geometry("500x300")
         frame_btn = Frame(self)
         frame_btn.pack(expand=True)

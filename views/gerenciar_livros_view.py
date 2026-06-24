@@ -7,7 +7,7 @@ class GerenciarLivrosView(tk.Toplevel):
         super().__init__(master)
         self.controller = LivroController()
         self.geometry("800x600")
-        self.title("Gerenciar Livros (Editar / Excluir)")
+        self.title("Gerenciar Livros")
 
         colunas = ("id", "titulo", "autor", "quantidade")
         self.tree = ttk.Treeview(self, columns=colunas, show="headings", height=10)

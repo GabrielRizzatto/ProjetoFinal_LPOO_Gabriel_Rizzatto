@@ -29,15 +29,6 @@ class EmprestimoController:
             )
             return emprestimo_dao.salvar(novo_emprestimo)
 
-    def listar_emprestimos(self):
-        with pegar_session() as session:
-            dao = EmprestimoDAO(session)
-            return dao.buscar_todos()
-
-    def buscar_emprestimo_por_id(self, id_emprestimo):
-        with pegar_session() as session:
-            dao = EmprestimoDAO(session)
-            return dao.buscar_por_id(id_emprestimo)
 
     def devolver_livro(self, id_emprestimo):
         with pegar_session() as session:

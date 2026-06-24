@@ -148,3 +148,108 @@ classDiagram
     Usuario "1" -- "0..*" Emprestimo : realiza >
     Livro "1" -- "0..*" Emprestimo : compõe >
 ```
+
+---
+
+## Diagrama de Sequência: Realizar Empréstimo
+
+Este diagrama detalha a interação temporal entre a View , Controller e o DAO durante a execução do caso de uso "Alugar Livro". Fica evidente a aplicação do padrão MVC e o respeito pelas condições de guarda relativas à disponibilidade de exemplares.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Usuário
+    participant V as :LivrosView
+    participant C as :EmprestimoController
+    participant LDAO as :LivroDAO
+    participant L as :Livro
+    participant E as :Emprestimo
+    participant EDAO as :EmprestimoDAO
+
+    U->>V: Clica em "Alugar Livro"
+    activate V
+    V->>C: realizar_emprestimo(id_usuario, id_livro)
+    activate C
+
+    C->>LDAO: buscar_por_id(id_livro)
+    activate LDAO
+    LDAO-->>C: retorna Objeto Livro
+    deactivate LDAO
+
+    alt [quantidade <= 0]
+        C-->>V: lança ValueError
+        V-->>U: Exibe Mensagem de Erro
+    else [quantidade > 0]
+        C->>L: qtd -= 1
+        activate L
+        L-->>C: 
+        deactivate L
+
+        C->>LDAO: atualizar(Livro)
+        activate LDAO
+        LDAO-->>C: 
+        deactivate LDAO
+
+        C->>E: <<create>> novo_emprestimo()
+        activate E
+        E-->>C: 
+        deactivate E
+
+        C->>EDAO: salvar(Emprestimo)
+        activate EDAO
+        EDAO-->>C: retorna Confirmação
+        deactivate EDAO
+
+        C-->>V: retorna Sucesso
+        V->>V: recarregar_livros()
+        V-->>U: Exibe Mensagem de Sucesso
+    end
+    
+    deactivate C
+    deactivate V
+```
+---
+
+## Diagrama de Máquina de Estados: Ciclo de Vida do Empréstimo
+
+O diagrama abaixo representa a mudança de estados da entidade Emprestimo dentro do sistema. Ilustra os processos internos executados em cada fase e as transições validadas por condições de guarda, desde a intenção de aluguer até ao encerramento com a devolução da obra.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Verificando_Disponibilidade
+    
+    Verificando_Disponibilidade : Verificando Disponibilidade
+    Verificando_Disponibilidade : do/ BuscarLivro()
+    
+    Verificando_Disponibilidade --> Emprestimo_Cancelado : [qtd <= 0]
+    
+    Verificando_Disponibilidade --> Emprestimo_Ativo : [qtd > 0]
+    
+    Emprestimo_Ativo : Empréstimo Ativo
+    Emprestimo_Ativo : do/ AtualizarEstoque(-1)
+    
+    Emprestimo_Ativo --> Encerrando_Emprestimo : Solicitar Devolução
+    
+    Encerrando_Emprestimo : Encerrando Empréstimo
+    Encerrando_Emprestimo : do/ AtualizarEstoque(+1)
+    
+    Encerrando_Emprestimo --> [*] : [Status = Devolvido]
+    
+    Emprestimo_Cancelado : Empréstimo Cancelado
+    Emprestimo_Cancelado : do/ LançarErro()
+    Emprestimo_Cancelado --> [*]
+```
+---
+
+## Considerações Finais
+O desenvolvimento deste sistema evidenciou a sinergia entre Análise e Projeto de Sistemas  e a Linguagem de Programação Orientada a Objetos. A fase de análise e a construção dos diagramas comportamentais foram determinantes para estabelecer uma estrutura limpa no código fonte em Python. O respeito pelas restrições do MVC, apoiado pelos padrões DAO e Strategy, resultou num software escalável, seguro e coerente com as regras de negócio de um ambiente real de biblioteca.
+
+---
+## Ferramentas Usadas
+* Draw.io
+* Mermaid
+---
+
+## Referências
+* GUEDES, Gilleanes T. A. UML 2: uma abordagem prática. 2. ed. São Paulo:
+Novatec, 2011. (disponível na Biblioteca)

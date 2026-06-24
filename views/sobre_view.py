@@ -17,7 +17,7 @@ class SobreView(tk.Toplevel):
         descricao = (
             "Aplicação desktop desenvolvida para informatizar e modernizar\n"
             "o controlo de acervos e empréstimos literários.\n\n"
-            "Garante a integridade dos dados e um controlo de acesso seguro,\n"
+            "Garante a integridade dos dados e um controle de acesso seguro,\n"
             "aplicando os padrões MVC, Strategy e DAO."
         )
         lbl_desc = Label(frame_conteudo, text=descricao, font=("Arial", 10), justify="center")

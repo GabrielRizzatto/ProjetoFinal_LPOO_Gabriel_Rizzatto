@@ -1,7 +1,6 @@
 from dao.livro_dao import LivroDAO
 from models.livro import Livro
 from dao.db_config import pegar_session
-from sqlalchemy.exc import IntegrityError
 from models.emprestimo import Emprestimo
 import json
 
@@ -26,15 +25,6 @@ class LivroController:
             dao = LivroDAO(session)
             return dao.buscar_todos()
         
-    def buscar_livro_por_id(self, id_livro):
-        with pegar_session() as session:
-            dao = LivroDAO(session)
-            return dao.buscar_por_id(id_livro)
-        
-    def buscar_livro_por_titulo(self, titulo_livro):
-        with pegar_session() as session:
-            dao = LivroDAO(session)
-            return dao.buscar_por_id(titulo_livro)
 
     def atualizar_livro(self, id_livro, titulo, autor, quantidade):
         with pegar_session() as session:

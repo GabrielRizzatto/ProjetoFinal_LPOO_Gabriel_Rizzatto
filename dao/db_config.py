@@ -12,7 +12,7 @@ engine = create_engine(DB_URL)
 
 Session = sessionmaker(bind=engine, expire_on_commit=False)
 
-@contextmanager
+@contextmanager # para usar o with
 def pegar_session():
     session = Session()
     try:

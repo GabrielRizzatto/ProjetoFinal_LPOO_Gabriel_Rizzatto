@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import messagebox, Entry, Label, Frame, END, ttk, Button
 from controllers.livro_controller import LivroController
 from controllers.emprestimo_controller import EmprestimoController
+from views.cadastro_livro_view import CadastroLivroView
+from views.gerenciar_livros_view import GerenciarLivrosView
+from views.gerenciar_usuarios_view import GerenciarUsuariosView
 from models.usuario import Usuario
 from views.strategy_factory import StrategyFactory
 from views.emprestimo_view import EmprestimoView
@@ -86,17 +89,14 @@ class LivrosView(tk.Toplevel):
 
     def abrir_cadastro_livro(self):
         self.withdraw()
-        from views.cadastro_livro_view import CadastroLivroView
         CadastroLivroView(master=self)
 
     def abrir_gerenciar_livros(self):
         self.withdraw()
-        from views.gerenciar_livros_view import GerenciarLivrosView
         GerenciarLivrosView(master=self)
 
     def gerenciar_usuarios(self):
         self.withdraw()
-        from views.gerenciar_usuarios_view import GerenciarUsuariosView
         GerenciarUsuariosView(master=self)
 
     def alugar_livro_selecionado(self):
